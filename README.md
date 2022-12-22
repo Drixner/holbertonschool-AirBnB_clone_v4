@@ -161,6 +161,5 @@ Drixner - [Github](https://github.com/Drixner) / [Twitter](https://twitter.com/D
 JulianZea - [Github](https://github.com/JulianZea) / [Twitter](https://twitter.com/JulinZea2?t=m4NUcgnp_nat0arm-We0JQ&s=08)  
 
 
-Second part of Airbnb: Joann Vuong
 ## License
 Public Domain. No copy write protection. 
