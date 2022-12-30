@@ -22,10 +22,10 @@ $(document).ready(function () {
         $('#api_status').addClass('available');
       }
     });
-});
 
+  
   $.ajax({
-    url: 'http://0.0.0.0:5001/api/v1/places_search/',
+    url: 'http://127.0.0.1:5001/api/v1/places_search/',
     type: 'POST',
     data: JSON.stringify({}),
     contentType: 'application/json',
@@ -44,9 +44,11 @@ $(document).ready(function () {
           .addClass('price_by_night');
         const priceByNightP = $(document.createElement('p'))
           .text(`$${place.price_by_night}`);
+		const addPriceText = $(document.createElement('div'))
+		  .addClass('title_box');
         priceByNightDiv.append(priceByNightP);
-
-        article.append(priceByNightDiv);
+        addPriceText.append(placeH2, priceByNightDiv);
+        article.append(addPriceText);
 
         const informationDiv = $(document.createElement('div'))
           .addClass('information');
@@ -84,7 +86,7 @@ $(document).ready(function () {
 
         const userId = place.user_id;
         $.ajax({
-          url: `http://0.0.0.0:5001/api/v1/users/${userId}`,
+          url: `http://127.0.0.1:5001/api/v1/users/${userId}`,
           type: 'GET',
           dataType: 'json'
         })
@@ -108,6 +110,6 @@ $(document).ready(function () {
         article.append(descriptionDiv);
 
         $('section.places').append(article);
-      });
     });
+  });
 });
