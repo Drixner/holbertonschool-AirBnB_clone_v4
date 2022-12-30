@@ -56,8 +56,8 @@ $(document).ready(function () {
           .addClass('max_guest');
         const guestImageDiv = $(document.createElement('div'))
           .addClass('guest_image');
-        const maxGuestP = $(document.createElement('p'))
-          .text(`${place.max_guest}`);
+        const maxGuestP = $(document.createElement('div'))
+		  .text(`${place.max_guest} Guest${place.max_guest !== 1 ? 's' : ''}`);
         maxGuestDiv.append(guestImageDiv);
         maxGuestDiv.append(maxGuestP);
         informationDiv.append(maxGuestDiv);
@@ -66,8 +66,8 @@ $(document).ready(function () {
           .addClass('number_rooms');
         const bedImageDiv = $(document.createElement('div'))
           .addClass('bed_image');
-        const numberRoomsP = $(document.createElement('p'))
-          .text(`${place.number_rooms}`);
+        const numberRoomsP = $(document.createElement('div'))
+          .text(`${place.number_rooms} Room${place.number_rooms !== 1 ? 's' : ''}`);
         numberRoomsDiv.append(bedImageDiv);
         numberRoomsDiv.append(numberRoomsP);
         informationDiv.append(numberRoomsDiv);
@@ -76,8 +76,8 @@ $(document).ready(function () {
           .addClass('number_bathrooms');
         const bathImageDiv = $(document.createElement('div'))
           .addClass('bath_image');
-        const numberBathroomsP = $(document.createElement('p'))
-          .text(`${place.number_bathrooms}`);
+        const numberBathroomsP = $(document.createElement('div'))
+          .text(`${place.number_bathrooms} Bathroom${place.number_bathrooms !== 1 ? 's' : ''}`);
         numberBathroomsDiv.append(bathImageDiv);
         numberBathroomsDiv.append(numberBathroomsP);
         informationDiv.append(numberBathroomsDiv);
