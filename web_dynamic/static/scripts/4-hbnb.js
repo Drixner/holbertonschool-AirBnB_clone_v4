@@ -1,27 +1,31 @@
-let amenitiesChecked = {};
-$(() => {
-  $('input[type=checkbox]').click(function () {
+let DicObjIds = {};
+$(document).ready(function () {
+  $('input[type="checkbox"]').on('click', function () {
     if (this.checked) {
-      amenitiesChecked[this.dataset.id] = this.dataset.name;
+      DicObjIds[$(this).data('id')] = $(this).data('name');
     } else {
-      delete amenitiesChecked[this.dataset.id];
+      delete DicObjIds[$(this).data('id')];
     }
-    $('.amenities h4').text(Object.values(amenitiesChecked).join(', '));
+    let msjpri = Object.values(DicObjIds).join(', ');
+    if (msjpri.length > 28) {
+      msjpri = msjpri.slice(0, 28) + '...';
+    }
+    $('.amenities h4').html(msjpri.length === 0 ? '&nbsp' : msjpri);
   });
 
   $.ajax({
-    url: 'http://0.0.0.0:5001/api/v1/status/',
+    url: 'http://127.0.0.1:5001/api/v1/status/',
     type: 'GET',
     dataType: 'json'
-  })
-    .done(function (data) {
+  }).done(function (data) {
       if (data.status === 'OK') {
         $('#api_status').addClass('available');
       }
     });
 
+  
   $.ajax({
-    url: 'http://0.0.0.0:5001/api/v1/places_search/',
+    url: 'http://127.0.0.1:5001/api/v1/places_search/',
     type: 'POST',
     data: JSON.stringify({}),
     contentType: 'application/json',
@@ -29,16 +33,16 @@ $(() => {
   })
     .done(getPlaces);
 
-  $('button').click(function (e) {
+  $('button').click(function(e) {
     let reqObj = {};
-    reqObj.amenities = Object.keys(amenitiesChecked);
+    reqObj.amenities = Object.keys(DicObjIds);
     $.ajax({
-      url: 'http://0.0.0.0:5001/api/v1/places_search/',
+      url: 'http://127.0.0.1:5001/api/v1/places_search/',
       type: 'POST',
       data: JSON.stringify(reqObj),
       contentType: 'application/json',
       dataType: 'json'
-    })
+	})
       .done(getPlaces);
   });
 
@@ -46,7 +50,7 @@ $(() => {
     data.sort((a, b) => {
       return a.name.localeCompare(b.name);
     });
-    $('section.places article').remove();
+	$('section.places article').remove();
     data.forEach(function (place) {
       const article = $(document.createElement('article'));
       const placeH2 = $(document.createElement('h2')).text(place.name);
@@ -56,9 +60,11 @@ $(() => {
         .addClass('price_by_night');
       const priceByNightP = $(document.createElement('p'))
         .text(`$${place.price_by_night}`);
+      const addPriceText = $(document.createElement('div'))
+		.addClass('title_box');
       priceByNightDiv.append(priceByNightP);
-
-      article.append(priceByNightDiv);
+      addPriceText.append(placeH2, priceByNightDiv);
+      article.append(addPriceText);
 
       const informationDiv = $(document.createElement('div'))
         .addClass('information');
@@ -66,8 +72,8 @@ $(() => {
         .addClass('max_guest');
       const guestImageDiv = $(document.createElement('div'))
         .addClass('guest_image');
-      const maxGuestP = $(document.createElement('p'))
-        .text(`${place.max_guest}`);
+      const maxGuestP = $(document.createElement('div'))
+        .text(`${place.max_guest} Guest${place.max_guest !== 1 ? 's' : ''}`);
       maxGuestDiv.append(guestImageDiv);
       maxGuestDiv.append(maxGuestP);
       informationDiv.append(maxGuestDiv);
@@ -76,8 +82,8 @@ $(() => {
         .addClass('number_rooms');
       const bedImageDiv = $(document.createElement('div'))
         .addClass('bed_image');
-      const numberRoomsP = $(document.createElement('p'))
-        .text(`${place.number_rooms}`);
+      const numberRoomsP = $(document.createElement('div'))
+        .text(`${place.number_rooms} Room${place.number_rooms !== 1 ? 's' : ''}`);
       numberRoomsDiv.append(bedImageDiv);
       numberRoomsDiv.append(numberRoomsP);
       informationDiv.append(numberRoomsDiv);
@@ -86,8 +92,8 @@ $(() => {
         .addClass('number_bathrooms');
       const bathImageDiv = $(document.createElement('div'))
         .addClass('bath_image');
-      const numberBathroomsP = $(document.createElement('p'))
-        .text(`${place.number_bathrooms}`);
+      const numberBathroomsP = $(document.createElement('div'))
+        .text(`${place.number_bathrooms} Bathroom${place.number_bathrooms !== 1 ? 's' : ''}`);
       numberBathroomsDiv.append(bathImageDiv);
       numberBathroomsDiv.append(numberBathroomsP);
       informationDiv.append(numberBathroomsDiv);
@@ -96,7 +102,7 @@ $(() => {
 
       const userId = place.user_id;
       $.ajax({
-        url: `http://0.0.0.0:5001/api/v1/users/${userId}`,
+        url: `http://127.0.0.1:5001/api/v1/users/${userId}`,
         type: 'GET',
         dataType: 'json'
       })
@@ -121,5 +127,5 @@ $(() => {
 
       $('section.places').append(article);
     });
-  }
+  };
 });
